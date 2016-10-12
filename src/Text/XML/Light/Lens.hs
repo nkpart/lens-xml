@@ -1,26 +1,53 @@
-module Text.XML.Light.Lens where
+{-|
+Module      : Text.XML.Light.Lens
+Description : Lenses for xml
+Copyright   : (c) Nick Partridge, 2016
+License     : BSD-3
+Maintainer  : nkpart@gmail.com
+
+These are lenses and prisms for @Text.XML.Light@. In general, the lenses/prisms have a consistent naming structure:
+
+* Prisms: an underscore followed by the name of the constructor they wrap.
+* Lenses: To avoid clashes with Text.XML.Light, lenses are named as for the record field, with a suffix of `L`.
+-}
+
+module Text.XML.Light.Lens (
+  -- * Content
+  _Elem, _Text, _CRef,
+  -- * Elem
+  elNameL, elAttribsL, elContentL, elLineL,
+  -- * Attr
+  attrKeyL, attrValL,
+  -- * CData
+  cdVerbatimL, cdDataL, cdLineL,
+  -- * CDataKind
+  _CDataText, _CDataVerbatim, _CDataRaw,
+  -- * QName
+  qNameL, qURIL, qPrefixL,
+                           ) where
 
 import Control.Lens
 import Text.XML.Light
 
--- | Content
+-- |
 _Elem :: Prism' Content Element
 _Elem = prism Elem g
   where g (Elem e) = Right e
         g v = Left v
 
+-- |
 _Text :: Prism' Content CData
 _Text = prism Text g
   where g (Text e) = Right e
         g v = Left v
 
+-- |
 _CRef :: Prism' Content String
 _CRef = prism CRef g
   where g (CRef e) = Right e
         g v = Left v
 
--- | Element
-
+-- | 
 elNameL :: Lens' Element QName
 elNameL = lens elName (\v a -> v { elName = a })
 
@@ -33,15 +60,11 @@ elContentL = lens elContent (\v a -> v { elContent = a })
 elLineL :: Lens' Element (Maybe Line)
 elLineL = lens elLine (\v a -> v { elLine = a })
 
--- | Attr
-
 attrKeyL :: Lens' Attr QName
 attrKeyL = lens attrKey (\v a -> v { attrKey = a })
 
 attrValL :: Lens' Attr String
 attrValL = lens attrVal (\v a -> v { attrVal = a })
-
--- | CData
 
 cdVerbatimL :: Lens' CData CDataKind
 cdVerbatimL = lens cdVerbatim (\v a -> v { cdVerbatim = a })
@@ -51,8 +74,6 @@ cdDataL = lens cdData (\v a -> v { cdData = a })
 
 cdLineL :: Lens' CData (Maybe Line)
 cdLineL = lens cdLine (\v a -> v { cdLine = a })
-
--- | CDataKind
 
 _CDataText :: Prism' CDataKind ()
 _CDataText = prism' (const CDataText) g
@@ -68,9 +89,6 @@ _CDataRaw :: Prism' CDataKind ()
 _CDataRaw = prism' (const CDataRaw) g
   where g CDataRaw = Just ()
         g _ = Nothing
-
-
--- | QName
 
 qNameL :: Lens' QName String
 qNameL = lens qName (\v a -> v { qName = a })
