@@ -5,7 +5,7 @@ Copyright   : (c) Nick Partridge, 2016
 License     : BSD-3
 Maintainer  : nkpart@gmail.com
 
-These are lenses and prisms for @Text.XML.Light@. In general, the lenses/prisms have a consistent naming structure:
+This module defines lenses and prisms for @Text.XML.Light@. The naming should be consistent:
 
 * Prisms: an underscore followed by the name of the constructor they wrap.
 * Lenses: To avoid clashes with Text.XML.Light, lenses are named as for the record field, with a suffix of `L`.
