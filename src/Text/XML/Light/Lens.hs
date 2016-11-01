@@ -12,6 +12,8 @@ This module defines lenses and prisms for @Text.XML.Light@. The naming should be
 -}
 
 module Text.XML.Light.Lens (
+  -- * Cursor
+  currentL, leftsL, rightsL, parentsL,
   -- * Content
   _Elem, _Text, _CRef,
   -- * Elem
@@ -28,6 +30,23 @@ module Text.XML.Light.Lens (
 
 import Control.Lens
 import Text.XML.Light
+import Text.XML.Light.Cursor
+
+-- |
+currentL :: Lens' Cursor Content
+currentL = lens current (\v x -> v { current = x})
+
+-- |
+leftsL :: Lens' Cursor [Content]
+leftsL = lens lefts (\v x -> v { lefts = x})
+
+-- |
+rightsL :: Lens' Cursor [Content]
+rightsL = lens rights (\v x -> v { rights = x})
+
+-- |
+parentsL :: Lens' Cursor Path
+parentsL = lens parents (\v x -> v { parents = x})
 
 -- |
 _Elem :: Prism' Content Element
